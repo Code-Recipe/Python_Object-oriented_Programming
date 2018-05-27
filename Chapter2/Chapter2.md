@@ -64,8 +64,11 @@ c = Student(age = 16)
 
 可变参数
 ------
-在python中，我们还可以定义**可变参数**。意为传入参数的个数是没有限制的，根据实际输入情况，python自己将这些传入的参数组成一个**元组(tuple)**。我们在变量名前加一个``*``来表示这是一个可变参数。
+在python中，我们还可以定义**可变参数**。意为传入参数的个数是没有限制的，根据实际输入情况，python自己将这些传入的参数组成一个**元组(tuple)**
+我们在变量名前加一个``*``来表示这是一个可变参数。
+
 我们可以直接把任意个数字传入函数，在函数里，python会自行生成一个元组。元组相当于一个不能改变的列表，用圆括号括起来。
+
 <lab lang="python" parameters="filename=average.py">
 <notice>练习环境在此无法显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>
 def average(*score):
@@ -76,148 +79,112 @@ average(1,2,3,4,5,6,7,8,9)
 tuple1=(1,2,3,4,5,6)
 #average(*tuple1)
 </lab>
-但如果我们本来传进来的是一个元组或列表，我们可以在前面加一个*号把这个元组变为可变变量传入函数。
+
+但如果我们本来传进来的是一个元组或列表，我们可以在前面加一个星号把这个元组变为可变变量传入函数。
 
 关键字参数
 ------
-可变参数可以将输入的任意个参数转变为元组，而关键字参数则可以将输入的任意个参数转化为一个dict。在变量前加两个*号即表示它是关键字参数。
+可变参数可以将输入的任意个参数转变为元组，而关键字参数则可以将输入的任意个参数转化为一个dict。在变量前加两个星号即表示它是关键字参数。
+
 ```python
-def Student(name, age, **dic)
+def Student(name, age, **dic):
   print('name: ',name,' age: ',age,' others: ',dic)
 ```
+
 如果我们以``Student('Allen',16)``来调用这个函数，结果会是``name: Allen age: 16 others:[]``,即在``others: ``后显示一个空词典。
+如果我们以``Student('Bella',16,tel=88888,city=Beijing)``来调用这个函数，结果会是``name: Bella age: 16 others:['tel': 88888, 'city'='Beijing']``
+如果我们的参数本身就是一个dict，可以在这个变量前加两个星号来将这个词典转化为关键字参数。
+
+```python
+dict1=['city': 'Shanghai', 'gender': 'male']
+Student('Dylan', 15, **dict1)
+```
+关键字参数有很强的实用性，我们可以给关键字参数设定默认值（或者不设），完成用户注册时的一些选填信息。
+
+命名关键字参数
+------
+关键字参数让我们在调用函数时可以任意输入我们想要的参数。但如果我们想要限定关键字参数的种类我们可以用到命名关键字参数。我们需要把位置参数放在前面，关键字参数放在后面，并用一个星号将两类参数隔开,python才会认为后面的参数是命名关键字参数。
+
+```python
+def Student(name, age, *,city, gender):
+  print('name: ',name,' age: ',age,' others: ',dic)
+```
+在调用时，我们必须明确的告诉python输入的是哪个关键字参数。比如
+```python
+Student("Ellen",15, city='Los Angeles', gender='Female')
+```
+实际上，从功能上来看，命名关键字参数和位置参数没有太大的区别，除了命名关键字参数可以任意调换位置而且需要传入参数名。但是从格式上来看，这样做让我们不必按顺序传入参数，同时指明传入的参数名，提高代码的可读性。
+
+**注意**：若函数的参数中有可变参数，我们可以将可变参数放置在位置参数和关键词函数中间，从而省略用以间隔的星号。
+```python
+def Student(name, age, *score,city, gender):
+  print(name, age, score, city, gender)
+```
+
+参数小结
+------
+
+之前说到可以在一个元组前加一个星号，在一个字典前加两个星号来将元组和字典拆开成可变参数和关键字参数。所以可以用一个通式来表示所有的函数的调用方法：
+``func(*args,**kw)``
+在函数的参数区中，我们可以按规则随意组合位置参数，可变参数和关键字参数。但是我们需要尽量保证代码的可读性和接口的可理解性。
 
 小练习
 -----
-1. Consider the following code segment.
-
-```java
-public class Tester {
-    public void someMethod(int a, int b){
-     int temp = a;
-     a = b;
-     b = temp;
-  }
-}
-
-public class TesterMain{
-    public static void main(String[] args){
-     int x = 6, y = 8;
-     Tester tester = new Tester();
-     tester.someMethod(x, y);
-  }
-}
+1. 
+```python
+def car(name, color='black'):
+  print('My '+name+' is '+color)
+car('red')
 ```
-Just before the end of execution of this program, what are the values of x, y, and
-temp, respectively?
+输出结果是什么?
 
 
-(A) 6, 8, 6
+(A) My  is red
 
 
-(B) 8, 6, 6
+(B) My is red
 
 
-(C) 6, 8, ?, where ? means undefined
+(C) My is black
 
 
-(D) 8, 6, ?, where ? means undefined
+(D) My black is black
 
 
-(E) 8, 6, 8
-
-<cr type="hidden"><notice>隐藏内容功能在此无法正常显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>C</cr>
-
-   2.Consider the following code segment.
-
-```java
-public class Person
-{
-  private String myName; 
-  private int myYearOfBirth;
-  public Person(String name, int yearOfBirth)
-  {
-    myName = name;
-    myYearOfBirth = yearOfBirth;
-  }
-
-  public String getName()
-  { return myName; }
-
-  public void setName(String name)
-  { myName = name; }
-//There may be instance variables, constructors, and methods that are not shown.
-}
-```
-
-Assume that the following declaration has been made.
-
-```java
-Person student = new Person("Thomas", 1995);
-```
-
-Which of the following statements is the most appropriate for changing the name of student from "Thomas" to "Tom" ?
-
-(A) student = new Person("Tom", 1995);
-
-(B) student.myName = "Tom";
-
-(C) student.getName("Tom");
-
-(D) student.setName("Tom");
-
-(E) Person.setName("Tom");
+(E) Syntax Error
 
 <cr type="hidden"><notice>隐藏内容功能在此无法正常显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>D</cr>
 
-3.Consider the following class declaration.
+2. 如果我想创建一个函数来注册用户，用户必填的信息是他们的用户名和邮箱，其余的信息为选填项，下列哪个选项的代码可以正确实现该功能？
 
-```java
-public class Student
-{
-  private String myName; 
-  private int myAge;
+(A) ```python
+    def register(name, email, gender, tel):
+      #implementation code
+    ```
+(B) ```python
+    def register(name, email, **optional):
+      #implementation code
+    ```
+(C) ```python
+    def register(name, email, *optional):
+      #implementation code
+    ```
 
-  public Student())
-  { /* implementation not shown */ }
+(D) ```python
+    def register(name, email, *, **optional):
+      #implementation code
+    ```
 
-  public Student(String name, int age)
-  { /* implementation not shown */ }
+(E) Cannot implement.
 
-  // No other constructors
-}
-```
-
-Which of the following declarations will compile without error?
-
-I.Student a = new Student();
-
-II.Student b = new Student("Juan", 15);
-
-III.Student c = new Student("Juan", "15");
-
-(A) I only
-
-(B) II only
-
-(C) I and II only
-
-(D) I and III only
-
-(E) I, II, and III
-
-<cr type="hidden"><notice>隐藏内容功能在此无法正常显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>C</cr>
-
+<cr type="hidden"><notice>隐藏内容功能在此无法正常显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>B</cr>
 
 
 ### 实验室
 
 
-<lab lang="java" parameters="filename=Hello.java">
+<lab lang="python" parameters="filename=Hello.py">
 <notice>练习环境在此无法显示，请移步至[程谱 coderecipe.cn](https://coderecipe.cn/learn/3)查看。</notice>
-public class Hello {
-   public static void main(String[] args) {
-     // 在这里添加你的代码
-   }
-}
+def func():
+  #Here goes your code
 </lab>
