@@ -148,7 +148,7 @@ car('red')
 (C) My is black
 
 
-(D) My black is black
+(D) My red is black
 
 
 (E) Syntax Error
